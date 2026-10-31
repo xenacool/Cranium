@@ -9,11 +9,12 @@ categories = ["game-development", "no-std"]
 repository = "https://github.com/scrdest/Cranium"
 
 [dependencies]
-bevy = { version = ">=0.19.0, <0.20.0", default-features = false, features = ["bevy_animation"]}
-serde = { version = "1.0.219", features = ["derive"], optional = true}
+bevy = { version = "0.20.1", default-features = false, features = ["bevy_animation"]}
+bevy_curve = "0.20.1"
+serde = { version = "1.0.219", features = ["derive"] }
 
 [dev-dependencies]
-bevy = { version = ">=0.19.0, <0.20.0", default-features = false, features = [
+bevy = { version = "0.20.1", default-features = false, features = [
   "dynamic_linking", 
   "bevy_animation",
   "debug", 
@@ -24,7 +25,6 @@ default = ["std"]
 
 # Provides a way to load ActionSets as Assets from the filesystem.
 actionset_loader = [
-    "dep:serde", 
     "bevy/bevy_asset",
     "bevy/serialize",
 ]

@@ -249,7 +249,7 @@ impl AcceptsActionHandlerRegistrations for World {
         let callback = trigger_fn.into();
         let cell = self.as_unsafe_world_cell();
 
-        let mut system_registry = match unsafe { cell.world_mut() }.get_non_send_resource_mut::<ActionHandlerKeyToSystemMap>() {
+        let mut system_registry = match unsafe { cell.world_mut() }.get_resource_mut::<ActionHandlerKeyToSystemMap>() {
             Some(registry) => registry,
             None => {
                 unsafe { cell.world_mut() }.init_resource::<ActionHandlerKeyToSystemMap>();

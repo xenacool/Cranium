@@ -38,13 +38,13 @@ You can obtain one at https://mozilla.org/MPL/2.0/.
 //!    more performant due to the lack of an Arc<T> overhead and a secondary registry lookup.
 //! 4) The methods of UtilityCurveExt - if you are planning to create custom Utility Curves, this  
 //!    trait provides constructors for various transforms that are still valid as Utility Curves.
-use bevy::math::{self, curve::CurveExt, Curve, curve::Interval};
+use bevy_curve::{self, Curve, CurveExt, Interval};
 use bevy::platform::prelude::{String, ToOwned};
 use bevy::platform::sync::Arc;
 use crate::types::{ActionScore, CraniumKvMap, MIN_CONSIDERATION_SCORE, MAX_CONSIDERATION_SCORE};
 
 // Reexporting some common basic Bevy Curves for easy access when building custom user Curves.
-pub use bevy::math::curve::{LinearCurve, QuadraticInCurve, QuadraticInOutCurve, ExponentialInCurve, CubicInCurve};
+pub use bevy_curve::{LinearCurve, QuadraticInCurve, QuadraticInOutCurve, ExponentialInCurve, CubicInCurve};
 
 /// Curve functions suitable for Utility scoring purposes.
 /// 
@@ -202,7 +202,7 @@ impl UtilityBinaryCurve {
     fn new() -> Self { Self {} }
 }
 
-impl math::curve::Curve<ActionScore> for UtilityBinaryCurve {
+impl bevy_curve::Curve<ActionScore> for UtilityBinaryCurve {
     fn domain(&self) -> Interval {
         Interval::UNIT
     }
@@ -252,9 +252,9 @@ impl UtilityCurve for UtilityBinaryCurve {}
 /// This most likely is an extremely niche use-case - but you do you!
 #[derive(Clone)]
 pub struct HalfwayMirrorCurve<C: UtilityCurve> {
-    wrapped_curve: math::curve::LinearReparamCurve<
+    wrapped_curve: bevy_curve::LinearReparamCurve<
         ActionScore, 
-        math::curve::PingPongCurve<ActionScore, C>
+        bevy_curve::PingPongCurve<ActionScore, C>
     >
 }
 
@@ -324,7 +324,7 @@ impl<A: UtilityCurve, B: UtilityCurve> From<(A, B)> for AverageCurve<A, B> {
     }
 }
 
-impl<A: UtilityCurve, B: UtilityCurve> math::curve::Curve<ActionScore> for AverageCurve<A, B> {
+impl<A: UtilityCurve, B: UtilityCurve> bevy_curve::Curve<ActionScore> for AverageCurve<A, B> {
     fn domain(&self) -> Interval {
         Interval::UNIT
     }
@@ -496,37 +496,37 @@ pub const CONST_THREEQUARTER_CURVE: UtilityConstantCurve = UtilityConstantCurve:
 // We clamp the outputs anyway, but it would be confusing.
 
 // Supported easing curves
-impl UtilityCurve for math::curve::CircularInCurve {}
-impl UtilityCurve for math::curve::CircularInOutCurve {}
-impl UtilityCurve for math::curve::CircularOutCurve {}
+impl UtilityCurve for bevy_curve::CircularInCurve {}
+impl UtilityCurve for bevy_curve::CircularInOutCurve {}
+impl UtilityCurve for bevy_curve::CircularOutCurve {}
 impl UtilityCurve for CubicInCurve {}
-impl UtilityCurve for math::curve::CubicInOutCurve {}
-impl UtilityCurve for math::curve::CubicOutCurve {}
+impl UtilityCurve for bevy_curve::CubicInOutCurve {}
+impl UtilityCurve for bevy_curve::CubicOutCurve {}
 impl UtilityCurve for ExponentialInCurve {}
-impl UtilityCurve for math::curve::ExponentialInOutCurve {}
-impl UtilityCurve for math::curve::ExponentialOutCurve {}
+impl UtilityCurve for bevy_curve::ExponentialInOutCurve {}
+impl UtilityCurve for bevy_curve::ExponentialOutCurve {}
 impl UtilityCurve for LinearCurve {}
 impl UtilityCurve for QuadraticInCurve {}
 impl UtilityCurve for QuadraticInOutCurve {}
-impl UtilityCurve for math::curve::QuadraticOutCurve {}
-impl UtilityCurve for math::curve::QuarticInCurve {}
-impl UtilityCurve for math::curve::QuarticInOutCurve {}
-impl UtilityCurve for math::curve::QuarticOutCurve {}
-impl UtilityCurve for math::curve::QuinticInCurve {}
-impl UtilityCurve for math::curve::QuinticInOutCurve {}
-impl UtilityCurve for math::curve::QuinticOutCurve {}
-impl UtilityCurve for math::curve::SineInCurve {}
-impl UtilityCurve for math::curve::SineInOutCurve {}
-impl UtilityCurve for math::curve::SineOutCurve {}
-impl UtilityCurve for math::curve::SmoothStepCurve {}
-impl UtilityCurve for math::curve::SmoothStepInCurve {}
-impl UtilityCurve for math::curve::SmoothStepOutCurve {}
-impl UtilityCurve for math::curve::SmootherStepCurve {}
-impl UtilityCurve for math::curve::SmootherStepInCurve {}
-impl UtilityCurve for math::curve::SmootherStepOutCurve {}
+impl UtilityCurve for bevy_curve::QuadraticOutCurve {}
+impl UtilityCurve for bevy_curve::QuarticInCurve {}
+impl UtilityCurve for bevy_curve::QuarticInOutCurve {}
+impl UtilityCurve for bevy_curve::QuarticOutCurve {}
+impl UtilityCurve for bevy_curve::QuinticInCurve {}
+impl UtilityCurve for bevy_curve::QuinticInOutCurve {}
+impl UtilityCurve for bevy_curve::QuinticOutCurve {}
+impl UtilityCurve for bevy_curve::SineInCurve {}
+impl UtilityCurve for bevy_curve::SineInOutCurve {}
+impl UtilityCurve for bevy_curve::SineOutCurve {}
+impl UtilityCurve for bevy_curve::SmoothStepCurve {}
+impl UtilityCurve for bevy_curve::SmoothStepInCurve {}
+impl UtilityCurve for bevy_curve::SmoothStepOutCurve {}
+impl UtilityCurve for bevy_curve::SmootherStepCurve {}
+impl UtilityCurve for bevy_curve::SmootherStepInCurve {}
+impl UtilityCurve for bevy_curve::SmootherStepOutCurve {}
 
 // A reverse of any valid curve is still a valid curve
-impl<U: UtilityCurve> UtilityCurve for math::curve::ReverseCurve<ActionScore, U> {}
+impl<U: UtilityCurve> UtilityCurve for bevy_curve::ReverseCurve<ActionScore, U> {}
 
 /// Specifies the transform used by the UtilityCurveSampler. 
 /// - FORWARD => pass-through to `UtilityCurve::sample_safe()`.
